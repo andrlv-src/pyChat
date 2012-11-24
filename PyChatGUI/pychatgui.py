@@ -4,10 +4,9 @@ import sys
 from PyQt4 import QtGui,  QtCore
 import gui_rc
 
-class Main_Window(QtGui.QMainWindow):
+class PyChatGui(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
-    
         self.resize(800, 300)
         self.setWindowTitle('Zu')
     
@@ -20,9 +19,7 @@ class Main_Window(QtGui.QMainWindow):
         self.create_toolbars()
         self.create_dock_windows()
         self.create_text_line()
-        self.create_statusbar()
-        
-        
+        self.create_statusbar()        
     
     def create_actions(self):
         self.quit_act = QtGui.QAction("&Quit", self, shortcut="Ctrl+Q",
@@ -65,8 +62,9 @@ class Main_Window(QtGui.QMainWindow):
     def create_statusbar(self):
         self.statusBar().showMessage(u'Вэлкам!')
         
-    
-app = QtGui.QApplication(sys.argv)
-main = Main_Window()
-main.show()
-sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    app = QtGui.QApplication(sys.argv)
+    main = PyChatGui()
+    main.show()
+    sys.exit(app.exec_())

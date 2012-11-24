@@ -10,7 +10,7 @@ import listener
 import rc4crypt
 import message
 import messages.text
-class Listener(listener.Listener): # listener
+class DefaultListener(listener.Listener): # listener
 	
 	# ключ для штфратора/дешифратора
 	KEY = b'tahci'
@@ -164,16 +164,11 @@ class Listener(listener.Listener): # listener
 		for i in range(4, len(msg)):
 			param.append(msg[i])
 
-
-
-
-
-
 		# TODO проверка на сообщение, правильный ди формат
 		return message.Message(msg[2], msg[3], param)
 
 
 
 if __name__ == '__main__':
-	Listener()
+	DefaultListener()
 
