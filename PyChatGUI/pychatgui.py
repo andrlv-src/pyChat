@@ -2,7 +2,7 @@
 
 import sys
 from PyQt4 import QtGui,  QtCore
-import gui_rc
+import pychatgui_rc
 
 class PyChatGui(QtGui.QMainWindow):
     def __init__(self):
@@ -12,7 +12,6 @@ class PyChatGui(QtGui.QMainWindow):
     
         self.text_edit = QtGui.QTextEdit()
         self.setCentralWidget(self.text_edit)
-        
         
         self.create_actions()
         self.create_menus()
@@ -26,7 +25,6 @@ class PyChatGui(QtGui.QMainWindow):
         statusTip="Quit the application", triggered=self.close)
         self.arrow_act = QtGui.QAction(QtGui.QIcon(':/icons/arrow.png'), '&Enter message here',  self)
 
-                                      
     def create_menus(self):
         self.file_menu = self.menuBar().addMenu("&File")
         self.file_menu.addSeparator()
@@ -38,7 +36,6 @@ class PyChatGui(QtGui.QMainWindow):
         self.addToolBar(QtCore.Qt.BottomToolBarArea, self.line_toolbar)
         self.line_toolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
         self.line_toolbar.addAction(self.arrow_act)
-        
         
     def create_dock_windows(self):
         dock = QtGui.QDockWidget('Users', self)
@@ -54,7 +51,6 @@ class PyChatGui(QtGui.QMainWindow):
 
 #        self.customer_list.currentTextChanged.connect(self.insertCustomer)
 
-
     def create_text_line(self):
         self.line_edit = QtGui.QLineEdit()
         self.line_toolbar.addWidget(self.line_edit)
@@ -62,7 +58,6 @@ class PyChatGui(QtGui.QMainWindow):
     def create_statusbar(self):
         self.statusBar().showMessage(u'Вэлкам!')
         
-
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     main = PyChatGui()
