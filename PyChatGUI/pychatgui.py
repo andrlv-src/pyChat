@@ -7,6 +7,8 @@ import pychatgui_rc
 class PyChatGui(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
+
+        # размеры основного окна и его заголовок
         self.resize(800, 300)
         self.setWindowTitle('Zu')
     
