@@ -4,8 +4,9 @@ from PyQt4 import QtGui,  QtCore
 import sys
 import PyChatAPI.defaultlistener
 import PyChatGUI.pychatgui
+import PyChatAPI.defaultsender
 
-class MainGui(object):
+class PyChat(object):
     def __init__(self):
         app = QtGui.QApplication(sys.argv)
         self.gui = PyChatGUI.pychatgui.PyChatGui()
@@ -21,9 +22,8 @@ class MainLogic(QtCore.QThread):
     
     # переопределяем метод run()
         # 
-
-
+    pass
 
 if __name__ == '__main__':
-    MainGui()
+    PyChat()
         
