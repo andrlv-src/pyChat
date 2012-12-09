@@ -5,7 +5,8 @@
 import msgprocessor
 import rc4crypt
 import message
-import messages.text
+import sys
+
 class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
 	
 	# ключ для штфратора/дешифратора
@@ -14,6 +15,9 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
 	# разделители
 	SEPARATOR = '\x13'
 	ZERO_SEPARATOR = '\x00'
+
+	# входящая строка
+	# msg_string = ''
 
 	# развернутое сообщение
 	unwrapped_msg = ''
@@ -34,7 +38,7 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
 	def process_message_from_server(self, msg_string):
 			
 		# снимаем враппер
-		self.unwrapped_msg = self.unwrap_server_message(self.msg_string)
+		self.unwrapped_msg = self.unwrap_server_message(msg_string)
 
 		# дешифруем текстовое сообщение посредством RC4
 		self.decrypted_msg = self.decrypt_message(self.unwrapped_msg)
@@ -75,7 +79,7 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
 	def wrap_client_message(self, message_obj): pass
 	
 	# шифруем сообщение
-	def crypt_message(self, msg): pass
+	def crypt_message(self, msg):
 		return self.decrypt_message(msg)
 
 	# дешифруем текстовое сообщение
@@ -103,5 +107,11 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
 
 
 if __name__ == '__main__':
-	DefaultMsgProcessor()
+	print '-> class default message processor, test...'
+	x = '61\x00FORWARD\x00\x0b\xc2c\x0c\xc1a\x9f@\xd5\xef\x98k\xeb\xd5\x19\x16\x12\xe1\xc4^\xa3\x8eEw\xc2P\xa5\x07\xec\xdb\xe36\xc7\xa0\xab\x9aW\xf5X\x95S\x9fG\xb3\xec6\xd0\xfb5eh4o'
+	print '-> processing string: \n', '->', x
+	a = DefaultMsgProcessor()
+	returned_str =  a.process_message_from_server(x)
+	print '-> output', returned_str.get_string()
+	raw_input('-> press Enter to Exit...')
 
