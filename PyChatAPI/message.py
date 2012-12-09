@@ -14,7 +14,7 @@ class Message(object):
 	__command = ''
 
 	# параметры комманды
-	__parameters = ()
+	__parameters = []
 
 
 	def __init__(self, sender, command, parameters):
@@ -33,6 +33,10 @@ class Message(object):
 	# получить параметры комманды
 	def get_parameters(self):
 		return self.__parameters
+
+	# tostring
+	def get_string(self):
+		return str(self.__sender + ' ' + self.__command + ' ' + ' '.join(self.__parameters))
 
 if __name__=='__main__':
 	print 'Message by WoenZu 2012'

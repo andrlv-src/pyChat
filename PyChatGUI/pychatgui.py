@@ -1,25 +1,34 @@
 # -*- coding: utf-8 -*-
 
-import sys
+import os, sys
 from PyQt4 import QtGui,  QtCore
 import pychatgui_rc
 
 class PyChatGui(QtGui.QMainWindow):
+    ap=''
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.resize(800, 300)
         self.setWindowTitle('Zu')
     
-        self.chatLogWindow = QtGui.QTextEdit()
-        self.setCentralWidget(self.chatLogWindow)
+        self.chatLog = QtGui.QTextEdit()
+        self.chatLog.setReadOnly(True)
+        self.setCentralWidget(self.chatLog)
         
         self.createActions()
         self.createMenus()
         self.createToolbars()
         self.createDockWindows()
         self.createChatImputLine()
-        self.createStatusBar()        
-    
+        self.createStatusBar()
+
+
+        # получаем путь к нашему файлу
+        self.ap = os.getcwdu() 
+        # подставляем к пути к картинке
+        self.setChatLog(u'<b>жирный</b>' + '<img src="' + self.ap + '\PyChatGUI\icons\mmmm.gif">')
+
+
     def createActions(self):
         self.quitAction = QtGui.QAction("&Quit", self, shortcut="Ctrl+Q",
         statusTip="Quit the application", triggered=self.close)
@@ -57,9 +66,15 @@ class PyChatGui(QtGui.QMainWindow):
         
     def createStatusBar(self):
         self.statusBar().showMessage(u'Вэлкам!')
+
+    def setChatLog(self, string):
+        self.chatLog.append(string)
         
 if __name__ == '__main__':
+    apppath = os.getcwdu()
     app = QtGui.QApplication(sys.argv)
     main = PyChatGui()
     main.show()
+    main.setChatLog(apppath)
+    main.setChatLog(u'<p style="color:#0000ff">Третий параграф</p>')
     sys.exit(app.exec_())
