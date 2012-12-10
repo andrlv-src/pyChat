@@ -60,12 +60,10 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
 	def unwrap_server_message(self, rec_msg):
 		# Формат сообщения, отправляемого сервером клиенту:
 		# [Длина сообщения] [0x00] [Команда] [0x00] [Сообщение]
-
 		pos = []
 		for i in range(len(rec_msg)):
 			if rec_msg[i] == self.ZERO_SEPARATOR:
 				pos.append(i)
-
 		# возвращаем [сообщение]
 		return rec_msg[pos[1]+1:]
 

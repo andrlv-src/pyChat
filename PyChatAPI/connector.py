@@ -5,6 +5,10 @@
 import socket
 
 class Connector(object):
+
+	__HOST = 'localhost'
+	__PORT = '6666'
+
 	def __init__(self):
 		
 		# создаем сокет
@@ -31,6 +35,9 @@ class Connector(object):
 			exit(0)
 	def reciever(self):
 		return self.sock.recv(1024)
+
+	def sender(self, string):
+		pass
 
 if __name__ == '__main__':
 	c = Connector()
