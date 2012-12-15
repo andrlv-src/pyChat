@@ -8,7 +8,7 @@ class PyChatGui(QtGui.QMainWindow):
     ap=''
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
-        self.resize(800, 300)
+        self.resize(800, 240)
         self.setWindowTitle('Zu')
     
         self.chatLog = QtGui.QTextEdit()
@@ -70,15 +70,25 @@ class PyChatGui(QtGui.QMainWindow):
     # вносим текстовую строку в основное окно чат-лога
     def setChatLog(self, string):
         self.chatLog.append(string)
-        print '->' + string
+        print '->[debug]' + string
 
     # получаем строку из chatImputLine
     def getLine(self):
-        self.setChatLog(self.chatImputLine.text())
+        self.setChatLog('[debug]' + self.chatImputLine.text())
 
-        # TODO после копипасты не стирает почемута, исправить
+        # TODO после копипасты не стирает почему-то, исправить
         # каким-то образом при копипасте копируется стиль написания скопипасченного текста
         self.chatImputLine.setText('')
+
+    
+
+
+    # функции интерфейса
+    def getText(self): pass
+        # self.emit(QtCore.SIGNAL('setText(QString)'),self.xx)
+
+    def setText(self, string):
+        self.setChatLog(string)
         
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

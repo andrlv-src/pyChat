@@ -4,7 +4,6 @@
 # message processor 
 
 import rc4crypt
-import message
 
 class MsgProcessor(object):
 
@@ -31,3 +30,5 @@ class MsgProcessor(object):
 
 	# интерпретируем дешифровнную текстовую строку
 	def string_processor(self, message_obj): pass
+
+	

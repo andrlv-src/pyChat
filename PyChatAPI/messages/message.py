@@ -22,6 +22,15 @@ class Message(object):
 		self.__command = command
 		self.__parameters = parameters
 
+	# запуск обработки сообщения
+	def run(): 
+		# должно возвращать кортэж из двух параметров
+		# первый сообщение на сервер, второй вывод в ГУИ
+		# если параметр не дорлжен передаваться - сделать его пустым ''
+		# при прочтении такого параметра другими объектами он должен игнорироваться\
+		# return some(param to GUI, param to SRV)
+		pass
+
 	# получить источник сообщения
 	def get_sender(self):
 		return self.__sender
