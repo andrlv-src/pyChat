@@ -5,6 +5,9 @@
 class Controller(object):
 
 	__observer = None
+	__userlist = None
+	__board = None
+	
 
 	def __init__(self):
 		pass

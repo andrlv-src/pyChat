@@ -17,7 +17,8 @@ class TextMsg(message.Message):
 		self.__string_to_srv = str('')
 
 		# возвращаем кортэж строк
-		return (self.__string_to_gui, self.__string_to_srv)
+		return {'GUI' : self.__string_to_gui, 
+				'SERVER' : self.__string_to_srv}
 
 if __name__ == '__main__':
 	print 'TextMsg'
