@@ -53,4 +53,4 @@ if __name__ == '__main__':
 	c = Connector()
 	a = True
 	while a:
-		print c.reciever()
+		print c.receive()
