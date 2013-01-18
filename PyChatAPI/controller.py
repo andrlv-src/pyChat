@@ -4,7 +4,7 @@
 
 class Controller(object):
 
-	__observer = None
+	__observer_list = {}
 	__userlist = None
 	__board = None
 	
@@ -12,7 +12,14 @@ class Controller(object):
 	def __init__(self):
 		pass
 
+	# интерфейс взаимодействия observer
+	def registerObserver(self, observer_obj):
+		self.__observer_list = observer_obj
 
+	def reportObserver(self):
+		pass
+
+	
 
 
 	# принимаем сообщение для управления им
@@ -25,12 +32,7 @@ class Controller(object):
 
 
 
-	# интерфейс взаимодействия observer
-	def registerObserver(self, observer_obj):
-		self.__observer = controller_obj
 
-	def reportObserver(self):
-		pass
 
 
 

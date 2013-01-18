@@ -17,10 +17,10 @@ class Connector(object):
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 		# подсоединяемся к чат-серверу
-		self.connect()
+		self.connect_to_server()
 
 	# соединение с сервером
-	def connect(self):
+	def connect_to_server(self):
 
 		HOST = 'localhost'
 		# HOST = '10.1.9.93'	# адрес сервеоа
@@ -37,10 +37,10 @@ class Connector(object):
 			except (EOFError):
 				sys.exit(0)
 
-	def receive(self):
+	def receive_msg_from_server(self):
 		return self.sock.recv(1024)
 
-	def send(self, string):
+	def send_msg_to_server(self, string):
 		pass
 
 	def registerObserver(self, observer_obj):
@@ -53,4 +53,4 @@ if __name__ == '__main__':
 	c = Connector()
 	a = True
 	while a:
-		print c.receive()
+		print c.receive_msg_from_server()
