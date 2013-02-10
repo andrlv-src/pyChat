@@ -1,34 +1,25 @@
 # -*- coding: utf-8 -*-
 # 05.12.2012
 
+import defaultmsgprocessor
+import connector
 
 class Controller(object):
 
-	__observer_list = {}
-	__userlist = None
-	__board = None
-	
 
 	def __init__(self):
-		pass
+		self.message_processor = defaultmsgprocessor.DefaultMsgProcessor()
+		self.connector = connector.Connector()
 
-	# интерфейс взаимодействия observer
-	def registerObserver(self, observer_obj):
-		self.__observer_list = observer_obj
+	def listen_server(self):
+		received_string = self.connector.receive_msg_from_server()
+		message_object = self.message_processor.process_message(received_string)
+		return message_object.run()
 
-	def reportObserver(self):
-		pass
+	def send_message_to_server(self, string_for_send): pass
 
-	
-
-
-	# принимаем сообщение для управления им
-	def to_control(self, msg_obj):
-		sender = msg_obj.get_sender()
-		command = msg_obj.get_command()
-		parameters = msg_obj.get_parameters()
-
-
+if __name__ == '__main__':
+	Controller()
 
 
 

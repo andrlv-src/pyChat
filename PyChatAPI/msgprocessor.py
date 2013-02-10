@@ -3,7 +3,7 @@
 # 31.10.2012
 # message processor 
 
-import rc4crypt
+import rc4encoder
 
 class MsgProcessor(object):
 
@@ -11,16 +11,16 @@ class MsgProcessor(object):
 		pass
 
 	# развертываем сообщение с сервера
-	def unwrap_server_message(self, message_obj): pass
+	def unwrap_message_from_server(self, message_obj): pass
 
 	# развертываем сообщение от клиента
-	def unwrap_client_message(self, message_obj): pass
+	def unwrap_message_from_client(self, message_obj): pass
 
 	# завертываем сообщение с сервера
-	def wrap_server_message(self, message_obj): pass
+	def wrap_message_to_server(self, message_obj): pass
 
 	# завертываем сообщение от клиента
-	def wrap_client_message(self, message_obj): pass
+	def wrap_message_to_client(self, message_obj): pass
 
 	# шифруем сообщение
 	def crypt_message(self, msg): pass
@@ -29,6 +29,6 @@ class MsgProcessor(object):
 	def decrypt_message(self, msg): pass
 
 	# интерпретируем дешифровнную текстовую строку
-	def string_processor(self, message_obj): pass
+	def build_message_object(self, message): pass
 
 	

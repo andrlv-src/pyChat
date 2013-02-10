@@ -4,7 +4,7 @@
 # decode('cp1251')
 
 import msgprocessor
-import rc4crypt
+import rc4encoder
 import sys
 
 import messages.alertmsg
@@ -22,78 +22,52 @@ import messages.statusmsg
 import messages.statusreqmsg
 import messages.textmsg
 
-class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
+class DefaultMsgProcessor(msgprocessor.MsgProcessor):
 	
 	# ключ для штфратора/дешифратора
 	KEY = b'tahci'
 
-	# разделители
 	SEPARATOR = '\x13'
 	ZERO_SEPARATOR = '\x00'
-
-	# развернутое сообщение
-	__unwrapped_msg = ''
-
-	# расшифрованное сообщение
-	__decrypted_msg = ''
-
 	__sender = ''
 	__commandd = ''
 	__param = []
 
 	def __init__(self):
+		self.rc4_encoder = rc4encoder.RC4Encoder()
 
-		# создаем объект "шифровщик"
-		self.rc4_coder = rc4crypt.RC4Crypt()
-
-		# создаем объект "сообщение"
-		# self.message = message.Message(None, None, None)
-
-	# обработчик полученного сообщения
 	def process_message(self, msg_string):
-		
-		# снимаем враппер
-		self.__unwrapped_msg = self.unwrap_server_message(msg_string)
+		message = self.unwrap_message_from_server(msg_string)
+		message = self.decrypt_message(message)
+		new_message_object = self.build_message_object(message)
+		return new_message_object
 
-		# дешифруем текстовое сообщение посредством RC4
-		self.__decrypted_msg = self.decrypt_message(self.__unwrapped_msg)
-
-		# обрабатываем дешифрованное текстовое сообщение и возвращаем его в виде объекта message
-		return self.string_processor(self.__decrypted_msg)
-
-	# строим сообщение на сервер
-	def build_message(): pass
-
-	# развертываем сообщение с сервера
-	def unwrap_server_message(self, rec_msg):
+	def unwrap_message_from_server(self, msg_for_unwrapping):
 		# Формат сообщения, отправляемого сервером клиенту:
 		# [Длина сообщения] [0x00] [Команда] [0x00] [Сообщение]
 		pos = []
-		for i in range(len(rec_msg)):
-			if rec_msg[i] == self.ZERO_SEPARATOR:
+		for i in range(len(msg_for_unwrapping)):
+			if msg_for_unwrapping[i] == self.ZERO_SEPARATOR:
 				pos.append(i)
-		# возвращаем [сообщение]
-		return rec_msg[pos[1]+1:]
+		return msg_for_unwrapping[pos[1]+1:]
 
-	# завертываем сообщение от клиента для сервера
-	def wrap_client_message(self, message_obj): pass
-	
-	# шифруем сообщение
+	def decrypt_message(self, msg_for_decrypting):
+		return self.rc4_encoder.encode(msg_for_decrypting, self.KEY)
+
+	def build_message_object_to_server(): pass
+
 	def crypt_message(self, msg):
 		return self.decrypt_message(msg)
 
-	# дешифруем текстовое сообщение
-	def decrypt_message(self, msg):
-		msg = self.rc4_coder.cipher(msg, self.KEY)
-		return msg
+	def wrap_message_to_server(self, message_obj): pass
 
 	# интерпретируем/истолковываем дешифрованную текстовую строку
-	def string_processor(self, msg):
+	def build_message_object(self, msg):
 		# формат обрабатываемого сообщения
 		# [0x13] "ichat" [0x13] [0x13] [Счетчик ASCII] [0x13][0x13] [Отправитель] [0x13][0x13]
 		# [Команда] [0x13][0x13] [параметры команды] [0x13]
 
-		# FORWARD, *CONNECT, *DISCONNECT, *CREATE_LINE, *REFRESH, STATUS_REQ, 
+		# FORWARD, *CONNECT, *DISCONNECT, *CREATE_LINE, *REFRESH, *STATUS_REQ, 
 		# *STATUS, *BOARD, *TEXT, *ME, *RECEIVED, *REFRESH_BOARD, *RENAME, *ALERT, *CREATE;
 
 		# TODO проверка на сообщение, правильный ли формат 
@@ -139,7 +113,7 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor): # message processor
 			elif self.__command == 'CREATE':
 				return messages.createmsg.CreateMsg(self.__sender, self.__command, self.__param)
 		except Exception, e:
-			print '[debug] Error: unknown __command', e
+			print '[debug] Error: unknown command', e
 
 if __name__ == '__main__':
 	print '-> class default message processor, test...'

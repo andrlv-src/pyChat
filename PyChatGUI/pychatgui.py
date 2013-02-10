@@ -19,9 +19,8 @@ class PyChatGui(QtGui.QMainWindow):
         self.createMenus()
         self.createToolbars()
         self.createDockWindows()
-        self.createChatImputLine()
+        self.createchatInputLine()
         self.createStatusBar()
-
 
         # получаем путь к нашему файлу
         self.ap = os.getcwdu()
@@ -39,12 +38,14 @@ class PyChatGui(QtGui.QMainWindow):
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.quitAction)
         self.viewMenu = self.menuBar().addMenu("&View")
+        self.propertiesMenu = self.menuBar().addMenu("&Properties")
+        self.aboutMenu = self.menuBar().addMenu("&About")
         
     def createToolbars(self):
-        self.chatImputLineToolbar = QtGui.QToolBar()
-        self.addToolBar(QtCore.Qt.BottomToolBarArea, self.chatImputLineToolbar)
-        self.chatImputLineToolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
-        self.chatImputLineToolbar.addAction(self.arrowAction)
+        self.chatInputLineToolbar = QtGui.QToolBar()
+        self.addToolBar(QtCore.Qt.BottomToolBarArea, self.chatInputLineToolbar)
+        self.chatInputLineToolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
+        self.chatInputLineToolbar.addAction(self.arrowAction)
         
     def createDockWindows(self):
         dock = QtGui.QDockWidget('Users', self)
@@ -58,38 +59,56 @@ class PyChatGui(QtGui.QMainWindow):
         self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
 
-    def createChatImputLine(self):
-        self.chatImputLine = QtGui.QLineEdit()
-        self.chatImputLineToolbar.addWidget(self.chatImputLine)
-        # подключаем поле для ввода к методу getLine()
-        self.chatImputLine.connect(self.chatImputLine, QtCore.SIGNAL('returnPressed()'), self.getLine)
+    def createchatInputLine(self):
+        self.chatInputLine = QtGui.QLineEdit()
+        self.chatInputLineToolbar.addWidget(self.chatInputLine)
+        self.chatInputLine.connect(self.chatInputLine, QtCore.SIGNAL('returnPressed()'), self.getStringFromInputLine)
         
     def createStatusBar(self):
         self.statusBar().showMessage(u'Вэлкам!')
+
+
+
+
+
 
     # вносим текстовую строку в основное окно чат-лога
     def setChatLog(self, string):
         self.chatLog.append(string)
         print '->[debug]' + string
 
-    # получаем строку из chatImputLine
-    def getLine(self):
-        self.setChatLog('[debug]' + self.chatImputLine.text())
+    # получаем строку из chatInputLine
+    def getStringFromInputLine(self):
+        chatInputLineContent = self.chatInputLine.text()
+        self.setChatLog('[debug]' + chatInputLineContent)
+        self.clearChatInputLine()
+        self.emit(QtCore.SIGNAL('getStringFromInputLine')) # эмитит сиглал в основную программу
+        return chatInputLineContent
 
         # TODO после копипасты не стирает почему-то, исправить
         # каким-то образом при копипасте копируется стиль написания скопипасченного текста
-        self.chatImputLine.setText('')
-
-    
+        
 
 
-    # функции интерфейса
-    def getText(self): pass
-        # self.emit(QtCore.SIGNAL('setText(QString)'),self.xx)
+    def clearChatInputLine(self):
+        self.chatInputLine.setText('')
+
+
+    def getTextOutside(self):
+        a = self.getStringFromInputLine()
+        # self.emit(QtCore.SIGNAL('setText(QString)'),self.??????)
 
     def setText(self, string):
         self.setChatLog(string)
+
+    def test_1(self, qwe):
+        self.chatLog.append(qwe)
         
+
+
+
+
+
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     main = PyChatGui()

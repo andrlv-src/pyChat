@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# RC4 cryptor
+# RC4 encoder
 
-class RC4Crypt(object):
+class RC4Encoder(object):
 
     def __init__(self):
         pass
 
-    def cipher(self, data, key):
+    def encode(self, data, key):
         x = 0
 
         box = range(256)
@@ -29,6 +29,6 @@ class RC4Crypt(object):
 if __name__=='__main__':
     print 'RC4 cryptor'
     a = raw_input('input string to encrypt:')
-    rc4 = RC4Crypt()
-    print '\nout string:', repr(rc4.cipher(a, b'tahci'))
+    rc4 = RC4Encoder()
+    print '\nout string:', repr(rc4.encode(a, b'tahci'))
     raw_input('\npress endet to exit...')

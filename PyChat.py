@@ -4,51 +4,47 @@
 
 ## TODO разобраться с относительностью путей к смайлам после преобразования py2exe 
 ##      иное решение - настройка пути к файлам смайлов в самом чате
-## TODO обязательно проверять входные строки ко всем методам обработчиков входящих строк
+
 
 from PyQt4 import QtGui,  QtCore
 import sys
+import time
 import PyChatAPI.defaultmsgprocessor
 import PyChatAPI.connector
+import PyChatAPI.controller
 import PyChatGUI.pychatgui
 
 class PyChat(object):
 
-    xx = ''
-    
     def __init__(self):
         app = QtGui.QApplication(sys.argv)
         self.gui = PyChatGUI.pychatgui.PyChatGui()
-        self.ml = MainLogic()
-        self.gui.connect(self.ml, QtCore.SIGNAL('setText(QString)'), self.gui.setText)
+        self.main_logic = MainLogic()
+        self.gui.connect(self.main_logic, QtCore.SIGNAL('setText(QString)'), self.gui.setText)
         self.gui.show()
-        self.ml.start()  
+        self.main_logic.start()  
         sys.exit(app.exec_())
         
 class MainLogic(QtCore.QThread):
     
     def __init__(self, parent = None):
         QtCore.QThread.__init__(self, parent)
-        self.connector = PyChatAPI.connector.Connector()
-
+        self.controller = PyChatAPI.controller.Controller()
+        # self.connector = PyChatAPI.connector.Connector()
+        # self.controller.register_observer('CONNECTOR', self.connector)
+        # self.connector.register_observer(self.controller)
         
-        self.msg_processor = PyChatAPI.defaultmsgprocessor.DefaultMsgProcessor()
-        # self.controller = PyChatAPI.controller.Connector()
-        # self.controller.connect(self, QtCore.SIGNAL('getText(QString)'), self.getText())
+        #self.connect(self, QtCore.SIGNAL('getStringFromInputLine(QString)'), self.getStringFromInputLine)
             
     def run(self):
-        
-        while True:
-            self.xx = self.connector.receive()
+        self.abc = 'test_1'
+        main_loop = True
+        while main_loop:
+            #print 'q'
 
-            # print '[debug]' + self.xx
-            self.xx = self.msg_processor.process_message(self.xx)
-            # <- controller
-            self.xx = self.xx.get_string()
-            self.emit(QtCore.SIGNAL('setText(QString)'),self.xx)
+            self.emit(QtCore.SIGNAL('setText(QString)'),self.abc)
+            time.sleep(1)
 
-            # listen GUI
-            # process message
         
 if __name__ == '__main__':
     PyChat()

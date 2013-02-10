@@ -41,14 +41,8 @@ class Connector(object):
 		return self.sock.recv(1024)
 
 	def send_msg_to_server(self, string):
-		pass
+		self.sock.send(string)
 
-	def registerObserver(self, observer_obj):
-		self.__observer = controller_obj
-
-	def reportObserver(self):
-		pass
-		
 if __name__ == '__main__':
 	c = Connector()
 	a = True
