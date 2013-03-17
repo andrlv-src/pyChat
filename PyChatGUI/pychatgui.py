@@ -25,7 +25,7 @@ class PyChatGui(QtGui.QMainWindow):
         # получаем путь к нашему файлу
         self.ap = os.getcwdu()
         # подставляем к пути к картинке
-        self.setChatLog(u'<b>тест</b>' + '<img src="' + self.ap + '\PyChatGUI\icons\mmmm.gif">')
+        self.putStringInChatLog(u'<b>тест</b>' + '<img src="' + self.ap + '\PyChatGUI\icons\mmmm.gif">')
 
 
     def createActions(self):
@@ -69,21 +69,16 @@ class PyChatGui(QtGui.QMainWindow):
 
 
 
-
-
-
-    # вносим текстовую строку в основное окно чат-лога
-    def setChatLog(self, string):
+    
+    def putStringInChatLog(self, string):
         self.chatLog.append(string)
-        print '->[debug]' + string
+        # print '->[debug]' +  unicode(string)
 
-    # получаем строку из chatInputLine
     def getStringFromInputLine(self):
         chatInputLineContent = self.chatInputLine.text()
-        self.setChatLog('[debug]' + chatInputLineContent)
+        self.putStringInChatLog('<debug from getStringFromInputLine>' + chatInputLineContent)
         self.clearChatInputLine()
-        self.emit(QtCore.SIGNAL('getStringFromInputLine')) # эмитит сиглал в основную программу
-        return chatInputLineContent
+        self.emit(QtCore.SIGNAL('getStringFromInputLine'), chatInputLineContent)
 
         # TODO после копипасты не стирает почему-то, исправить
         # каким-то образом при копипасте копируется стиль написания скопипасченного текста
@@ -93,27 +88,19 @@ class PyChatGui(QtGui.QMainWindow):
     def clearChatInputLine(self):
         self.chatInputLine.setText('')
 
-
     def getTextOutside(self):
         a = self.getStringFromInputLine()
         # self.emit(QtCore.SIGNAL('setText(QString)'),self.??????)
 
     def setText(self, string):
-        self.setChatLog(string)
-
-    def test_1(self, qwe):
-        self.chatLog.append(qwe)
-        
-
-
-
+        self.putStringInChatLog(string)
 
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     main = PyChatGui()
     main.show()
-    main.setChatLog(u'<b><p style="color:#0000ff">' + main.ap + '</p></b>')
-    main.setChatLog(u'<b><p style="color:#0000ff">' + main.ap + '</p></b>')
-    main.setChatLog(u'<b>тест</b>' + '<img src="' + main.ap + '\icons\WH40K.gif">')
+    main.putStringInChatLog(u'<b><p style="color:#0000ff">' + main.ap + '</p></b>')
+    main.putStringInChatLog(u'<b><p style="color:#0000ff">' + main.ap + '</p></b>')
+    main.putStringInChatLog(u'<b>тест</b>' + '<img src="' + main.ap + '\icons\WH40K.gif">')
     sys.exit(app.exec_())

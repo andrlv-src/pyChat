@@ -26,12 +26,8 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor):
 	
 	# ключ для штфратора/дешифратора
 	KEY = b'tahci'
-
 	SEPARATOR = '\x13'
 	ZERO_SEPARATOR = '\x00'
-	__sender = ''
-	__commandd = ''
-	__param = []
 
 	def __init__(self):
 		self.rc4_encoder = rc4encoder.RC4Encoder()
@@ -77,43 +73,47 @@ class DefaultMsgProcessor(msgprocessor.MsgProcessor):
 		while '' in msg:
 			msg.remove('')
 
+		parameters = []
 		for i in range(4, len(msg)):
-			self.__param.append(msg[i])
+			parameters.append(msg[i])
 
-		self.__sender = msg[2]
-		self.__command = msg[3]
+		sender = msg[2]
+		command = msg[3]
+		constructed_message = self.construct_message(sender, command, parameters)
+		return constructed_message
 
+	def construct_message(self, sender, command, parameters):
 		try:
-			if self.__command == 'CONNECT':
-				return messages.connectmsg.ConnectMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'DISCONNECT':
-				return messages.disconnectmsg.DisonnectMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'CREATE_LINE':
-				return messages.createlinemsg.CreateLineMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'REFRESH':
-				return messages.refreshmsg.RefreshMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'STATUS_REQ':
-				return messages.statusreqmsg.StatusReqMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'STATUS':
-				return messages.statusmsg.StatusMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'BOARD':
-				return messages.boardmsg.BoardMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'TEXT':
-				return messages.textmsg.TextMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'ME':
-				return messages.memsg.MeMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'RECEIVED':
-				return messages.receivedmsg.ReceivedMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'REFRESH_BOARD':
-				return messages.refreshboardmsg.RefreshBoardMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'RENAME':
-				return messages.renamemsg.RenameMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'ALERT':
-				return messages.alertmsg.AlertMsg(self.__sender, self.__command, self.__param)
-			elif self.__command == 'CREATE':
-				return messages.createmsg.CreateMsg(self.__sender, self.__command, self.__param)
+			if command == 'CONNECT':
+				return messages.connectmsg.ConnectMsg(sender, command, parameters)
+			elif command == 'DISCONNECT':
+				return messages.disconnectmsg.DisconnectMsg(sender, command, parameters)
+			elif command == 'CREATE_LINE':
+				return messages.createlinemsg.CreateLineMsg(sender, command, parameters)
+			elif command == 'REFRESH':
+				return messages.refreshmsg.RefreshMsg(sender, command, parameters)
+			elif command == 'STATUS_REQ':
+				return messages.statusreqmsg.StatusReqMsg(sender, command, parameters)
+			elif command == 'STATUS':
+				return messages.statusmsg.StatusMsg(sender, command, parameters)
+			elif command == 'BOARD':
+				return messages.boardmsg.BoardMsg(sender, command, parameters)
+			elif command == 'TEXT':
+				return messages.textmsg.TextMsg(sender, command, parameters)
+			elif command == 'ME':
+				return messages.memsg.MeMsg(sender, command, parameters)
+			elif command == 'RECEIVED':
+				return messages.receivedmsg.ReceivedMsg(sender, command, parameters)
+			elif command == 'REFRESH_BOARD':
+				return messages.refreshboardmsg.RefreshBoardMsg(sender, command, parameters)
+			elif command == 'RENAME':
+				return messages.renamemsg.RenameMsg(sender, command, parameters)
+			elif command == 'ALERT':
+				return messages.alertmsg.AlertMsg(sender, command, parameters)
+			elif command == 'CREATE':
+				return messages.createmsg.CreateMsg(sender, command, parameters)
 		except Exception, e:
-			print '[debug] Error: unknown command', e
+			print '[debug] Error: unknown command', e	
 
 if __name__ == '__main__':
 	print '-> class default message processor, test...'

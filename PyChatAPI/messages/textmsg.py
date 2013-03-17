@@ -10,22 +10,14 @@ class TextMsg(message.Message):
 		message.Message.__init__(self, sender, command, parameters)
 
 	def run(self):
-		# в ГУИ посылаем строку отправитель параметры
-		self.__string_to_gui = (str(self.get_sender()) + str(self.get_parameters()))
+		string_of_parameters = ' '.join(self.get_parameters())
+		string_for_gui = (self.get_sender() + ' ' + string_of_parameters)
+		string_for_srv = str('')
 
-		# на сервер отправляем ''
-		self.__string_to_srv = str('')
-
-		# возвращаем кортэж строк
-		return {'GUI' : self.__string_to_gui, 
-				'SERVER' : self.__string_to_srv}
+		return {'GUI' : string_for_gui, 
+				'SERVER' : string_for_srv}
 
 if __name__ == '__main__':
 	print 'TextMsg'
 	a = TextMsg('sender', 'command', ['param1', 'param2', 'param3'])
-	print a.get_string()
 	print a.run()
-
-
-
-	
